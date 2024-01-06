@@ -1,21 +1,56 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { collection, query, getDocs } from 'firebase/firestore'
+import { onMounted, ref } from 'vue'
+import { collection, query, onSnapshot } from 'firebase/firestore'
 import { db } from '@/firebase/config'
+
+interface Pic {
+  author: string
+  date: string
+  desc: string
+  id: string
+  title: string
+  url: string
+}
+const pics = ref<Pic[]>([])
 
 onMounted(async () => {
   const q = query(collection(db, 'pics'))
-
-  const querySnapshot = await getDocs(q)
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, ' => ', doc.data())
+  onSnapshot(q, (querySnapshot) => {
+    const tempPics: Pic[] = []
+    querySnapshot.forEach((doc) => {
+      tempPics.push({
+        id: doc.id,
+        ...doc.data(),
+      } as Pic)
+    })
+    pics.value = tempPics
   })
 })
 </script>
 
 <template>
-  <main></main>
+  <main>
+    <div class="container h-screen ">
+      <v-row class="flex-wrap pa-4 ga-2 justify-lg-space-between">
+        <v-card
+          v-for="pic of pics"
+          :key="pic.id"
+          width="310"
+          height="310"
+          :image="pic.url"
+          :title="pic.title"
+          prepend-icon="mdi-camera"
+          theme="dark"
+        ></v-card>
+      </v-row>
+    </div>
+  </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.container {
+  max-width: 1400px;
+  padding: 40px;
+  margin: 0 auto;
+}
+</style>
