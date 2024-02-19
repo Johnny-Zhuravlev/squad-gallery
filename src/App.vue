@@ -6,19 +6,15 @@ import PicsList from '@/components/PicsList.vue'
 
 const pics = ref<Pic[]>([])
 
-const openPhotoModal = (pic) => {
-  console.log(pic)
-}
-
 onMounted(async () => {
-  getPics(pics)
+  getPics(pics)  
 })
 </script>
 
 <template>
   <main>
     <div class="container h-screen">
-      <PicsList :pics="pics" @open-photo="openPhotoModal" />
+      <PicsList :pics="pics" />
     </div>
   </main>
 </template>

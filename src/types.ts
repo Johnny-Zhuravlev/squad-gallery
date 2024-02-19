@@ -6,3 +6,9 @@ export interface Pic {
   title: string
   url: string
 }
+
+export interface Photo {
+  id: string
+  title: string
+  src: string
+}
