@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { Pic } from '../types'
 
-defineProps<{pics: Pic[]}>()
+defineProps<{ pics: Pic[] }>()
+const emits = defineEmits(['open-photo']);
 </script>
 
 <template>
@@ -15,8 +16,25 @@ defineProps<{pics: Pic[]}>()
       :title="pic.title"
       prepend-icon="mdi-camera"
       theme="dark"
+      @click="emits('open-photo', pic)"
     ></v-card>
   </v-row>
 </template>
 
-<style scoped></style>
+<style scoped>
+:deep(.v-card) {
+  display: flex;
+  align-items: flex-end;
+  cursor: pointer;
+}
+:deep(.v-card:hover) .v-card-item {
+  opacity: 1;
+}
+
+:deep(.v-card-item) {
+  width: 100%;
+  opacity: 0;
+  transition: all .2s linear;
+  backdrop-filter: blur(2px);
+}
+</style>

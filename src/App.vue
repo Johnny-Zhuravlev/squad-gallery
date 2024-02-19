@@ -2,9 +2,13 @@
 import { onMounted, ref } from 'vue'
 import type { Pic } from './types'
 import { getPics } from '@/firebase/pics'
-import PicsList from './components/PicsList.vue'
+import PicsList from '@/components/PicsList.vue'
 
 const pics = ref<Pic[]>([])
+
+const openPhotoModal = (pic) => {
+  console.log(pic)
+}
 
 onMounted(async () => {
   getPics(pics)
@@ -14,7 +18,7 @@ onMounted(async () => {
 <template>
   <main>
     <div class="container h-screen">
-      <PicsList :pics="pics" />
+      <PicsList :pics="pics" @open-photo="openPhotoModal" />
     </div>
   </main>
 </template>
